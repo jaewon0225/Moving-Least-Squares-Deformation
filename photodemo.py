@@ -24,7 +24,7 @@ def invert_map(F):
         P += correction * 0.5
     return P
 
-img = cv2.imread("example.png")
+img = cv2.imread("images/example.png")
 img = cv2.resize(img,[150,150])
 Img_map_x = np.zeros((img.shape[0], img.shape[1]), dtype=np.float32)
 Img_map_y = np.zeros((img.shape[0], img.shape[1]), dtype=np.float32)
@@ -47,13 +47,17 @@ for coord in enumerate(p):
     cv2.circle(img, p[coord[0]], 3, (255, 255, 0), cv2.FILLED)
     cv2.circle(dst_img, q[coord[0]], 3, (255, 0, 0), cv2.FILLED)
     cv2.circle(dst_img, p[coord[0]], 3, (255, 255, 0), cv2.FILLED)
+#
+# plt.scatter(new_v[:,0],new_v[:,1],s=5)
+# plt.scatter(grid[:,0],grid[:,1],s=5)
+# plt.scatter(np.array(p)[:,0],np.array(p)[:,1])
+# plt.scatter(np.array(q)[:,0],np.array(q)[:,1])
+#
+# plt.show()
 
-plt.scatter(new_v[:,0],new_v[:,1],s=5)
-plt.scatter(grid[:,0],grid[:,1],s=5)
-plt.scatter(np.array(p)[:,0],np.array(p)[:,1])
-plt.scatter(np.array(q)[:,0],np.array(q)[:,1])
+cv2.imwrite("images/original.png",img)
+cv2.imwrite("images/deformed.png",dst_img)
 
-plt.show()
 
 cv2.imshow("Deformed",dst_img)
 cv2.imshow("Original",img)
