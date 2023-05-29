@@ -53,12 +53,6 @@ for coord in enumerate(p):
     cv2.circle(dst_img, q[coord[0]], 3, (255, 0, 0), cv2.FILLED)
     cv2.circle(dst_img, p[coord[0]], 3, (255, 255, 0), cv2.FILLED)
 
-plt.scatter(new_v[:, 0], new_v[:, 1], s=5)
-plt.scatter(grid[:, 0], grid[:, 1], s=5)
-plt.scatter(np.array(p)[:, 0], np.array(p)[:, 1])
-plt.scatter(np.array(q)[:, 0], np.array(q)[:, 1])
-plt.show()
-
 cv2.imshow("Deformed", dst_img)
 cv2.imshow("Original", img)
 cv2.waitKey()
