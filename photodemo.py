@@ -26,7 +26,6 @@ def invert_map(F):
 
 img = cv2.imread("example.png")
 img = cv2.resize(img,[150,150])
-print('image shape = ',img.shape)
 Img_map_x = np.zeros((img.shape[0], img.shape[1]), dtype=np.float32)
 Img_map_y = np.zeros((img.shape[0], img.shape[1]), dtype=np.float32)
 grid = make_grid(img.shape[0], img.shape[1])
@@ -52,7 +51,6 @@ for coord in enumerate(p):
 plt.scatter(new_v[:,0],new_v[:,1],s=5)
 plt.scatter(grid[:,0],grid[:,1],s=5)
 plt.scatter(np.array(p)[:,0],np.array(p)[:,1])
-print(np.array(p)[:,0])
 plt.scatter(np.array(q)[:,0],np.array(q)[:,1])
 
 plt.show()
