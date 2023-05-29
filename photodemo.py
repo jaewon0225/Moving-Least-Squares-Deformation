@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-import time
 from MLSDeformation import mls_affine_transform_pre_calc,calculate_new_v
 
 def make_grid(xdim, ydim):
@@ -47,17 +46,12 @@ for coord in enumerate(p):
     cv2.circle(img, p[coord[0]], 3, (255, 255, 0), cv2.FILLED)
     cv2.circle(dst_img, q[coord[0]], 3, (255, 0, 0), cv2.FILLED)
     cv2.circle(dst_img, p[coord[0]], 3, (255, 255, 0), cv2.FILLED)
-#
-# plt.scatter(new_v[:,0],new_v[:,1],s=5)
-# plt.scatter(grid[:,0],grid[:,1],s=5)
-# plt.scatter(np.array(p)[:,0],np.array(p)[:,1])
-# plt.scatter(np.array(q)[:,0],np.array(q)[:,1])
-#
-# plt.show()
 
-cv2.imwrite("images/original.png",img)
-cv2.imwrite("images/deformed.png",dst_img)
-
+plt.scatter(new_v[:,0],new_v[:,1],s=5)
+plt.scatter(grid[:,0],grid[:,1],s=5)
+plt.scatter(np.array(p)[:,0],np.array(p)[:,1])
+plt.scatter(np.array(q)[:,0],np.array(q)[:,1])
+plt.show()
 
 cv2.imshow("Deformed",dst_img)
 cv2.imshow("Original",img)
