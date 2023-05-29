@@ -50,19 +50,3 @@ def calculate_new_v(q_input, A_list, w, w_sum, v_input):
         new_v = np.sum(q_hat[:,:,i[0]]*A_vector,axis=0).reshape(1,2)+q_star[:,i[0]].reshape(1,2)
         new_v_list.append(new_v.reshape(2))
     return np.array(new_v_list)
-
-
-# ptest = [[1,1], [1,2], [2,1], [2,2]]
-# qtest = [[0.8,0.8], [1.2,1.8], [2.2,0.8], [2.2,2.2]]
-# vtest = [[0.5,0.5], [0.5,1.5], [0.5,2.5], [1.5,0.5], [1.5,1.5], [1.5,2.5], [2.5,0.5], [2.5,1.5], [2.5,2.5]]
-# np_v = np.array(vtest)
-# A_list, w, w_sum = mls_affine_transform_pre_calc(ptest,vtest,1)
-# new_v = (calculate_new_v(qtest, A_list, w, w_sum, vtest))
-# print(new_v)
-#
-# plt.scatter(new_v[:,0],new_v[:,1])
-# plt.scatter(np_v[:,0],np_v[:,1])
-# # plt.scatter(np.array(ptest)[:,0],np.array(ptest)[:,1])
-# # plt.scatter(np.array(qtest)[:,0],np.array(qtest)[:,1])
-#
-# plt.show()

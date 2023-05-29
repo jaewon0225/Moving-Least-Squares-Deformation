@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 import time
 from MLSDeformation import mls_affine_transform_pre_calc,calculate_new_v
 
@@ -11,6 +12,17 @@ def make_grid(xdim, ydim):
         for j in ygrid:
             grid.append(np.array([i, j]))
     return np.array(grid)
+
+def invert_map(F):
+    # shape is (h, w, 2), an "xymap"
+    (h, w) = F.shape[:2]
+    I = np.zeros_like(F)
+    I[:,:,1], I[:,:,0] = np.indices((h, w)) # identity map
+    P = np.copy(I)
+    for i in range(10):
+        correction = I - cv2.remap(F, P, None, interpolation=cv2.INTER_LINEAR)
+        P += correction * 0.5
+    return P
 
 img = cv2.imread("example.png")
 img = cv2.resize(img,[150,150])
@@ -29,12 +41,23 @@ for j in enumerate(Img_map_x[:,0]):
         Img_map_x[i[0],j[0]] = new_v[k][0]
         Img_map_y[i[0], j[0]] = new_v[k][1]
         k += 1
-dst_img = cv2.remap(img, Img_map_x, Img_map_y, cv2.INTER_LINEAR)
+combined = np.stack((Img_map_x,Img_map_y),axis=2)
+
+dst_img = cv2.remap(img, invert_map(combined)[:,:,0].reshape(img.shape[0], img.shape[1]), invert_map(combined)[:,:,1].reshape(img.shape[0], img.shape[1]), cv2.INTER_LINEAR)
 for coord in enumerate(p):
     cv2.circle(img, p[coord[0]], 3, (255, 255, 0), cv2.FILLED)
-    cv2.circle(dst_img, q[coord[0]], 3, (255, 255, 0), cv2.FILLED)
+    cv2.circle(dst_img, q[coord[0]], 3, (255, 0, 0), cv2.FILLED)
+    cv2.circle(dst_img, p[coord[0]], 3, (255, 255, 0), cv2.FILLED)
 
+plt.scatter(new_v[:,0],new_v[:,1],s=5)
+plt.scatter(grid[:,0],grid[:,1],s=5)
+plt.scatter(np.array(p)[:,0],np.array(p)[:,1])
+print(np.array(p)[:,0])
+plt.scatter(np.array(q)[:,0],np.array(q)[:,1])
+
+plt.show()
 
 cv2.imshow("Deformed",dst_img)
 cv2.imshow("Original",img)
 cv2.waitKey()
+
