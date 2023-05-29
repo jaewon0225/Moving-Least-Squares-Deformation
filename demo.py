@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import time
 from MLSDeformation import mls_affine_transform_pre_calc, calculate_new_v
 
 #Create grid
@@ -15,8 +16,12 @@ q = [[2,4], [4,8], [1,14], [10,5], [9,8], [11,19], [16,6],[18,10],[19,20]]
 
 mls_affine_transform_pre_calc(p,grid,1)
 A_list, w, w_sum = mls_affine_transform_pre_calc(p,grid,1)
+time1 = time.time()
 new_v = (calculate_new_v(q, A_list, w, w_sum, grid))
+print(time.time()-time1)
 
+
+print("done")
 plt.scatter(new_v[:,0],new_v[:,1],s=5)
 plt.scatter(grid[:,0],grid[:,1],s=5)
 plt.scatter(np.array(p)[:,0],np.array(p)[:,1])

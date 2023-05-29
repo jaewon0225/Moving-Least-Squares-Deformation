@@ -9,7 +9,7 @@ def mls_affine_transform_pre_calc(p_input,v_input,a):
     v = v.reshape(len(v_input),2)
     v = v.transpose() #[2,v]
     #calculate w
-    w = 1/((np.sum((extruded_p-v)**2,axis=1))**a) #[p,v]
+    w = 1/((np.sum((extruded_p-v).astype(np.float32)**2,axis=1))**a) #[p,v]
 
     ##Calculate p_star and q_star
     w = w.reshape(len(p_input),1,len(v_input))

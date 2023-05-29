@@ -1,0 +1,40 @@
+import cv2
+import numpy as np
+import time
+from MLSDeformation import mls_affine_transform_pre_calc,calculate_new_v
+
+def make_grid(xdim, ydim):
+    xgrid = np.linspace(0, xdim-1, xdim)
+    ygrid = np.linspace(0, ydim-1, ydim)
+    grid = []
+    for i in xgrid:
+        for j in ygrid:
+            grid.append(np.array([i, j]))
+    return np.array(grid)
+
+img = cv2.imread("example.png")
+img = cv2.resize(img,[150,150])
+print('image shape = ',img.shape)
+Img_map_x = np.zeros((img.shape[0], img.shape[1]), dtype=np.float32)
+Img_map_y = np.zeros((img.shape[0], img.shape[1]), dtype=np.float32)
+grid = make_grid(img.shape[0], img.shape[1])
+p = [[30,30],[30,75],[30,120],[75,30],[75,75],[75,120],[120,30],[120,75],[120,120]]
+q = [[35,40],[23,66],[40,110],[75,24],[75,80],[75,108],[120,31],[120,60],[124,120]]
+mls_affine_transform_pre_calc(p,grid,1)
+A_list, w, w_sum = mls_affine_transform_pre_calc(p,grid,1)
+new_v = (calculate_new_v(q, A_list, w, w_sum, grid))
+k = 0
+for j in enumerate(Img_map_x[:,0]):
+    for i in enumerate(Img_map_x[0,:]):
+        Img_map_x[i[0],j[0]] = new_v[k][0]
+        Img_map_y[i[0], j[0]] = new_v[k][1]
+        k += 1
+dst_img = cv2.remap(img, Img_map_x, Img_map_y, cv2.INTER_LINEAR)
+for coord in enumerate(p):
+    cv2.circle(img, p[coord[0]], 3, (255, 255, 0), cv2.FILLED)
+    cv2.circle(dst_img, q[coord[0]], 3, (255, 255, 0), cv2.FILLED)
+
+
+cv2.imshow("Deformed",dst_img)
+cv2.imshow("Original",img)
+cv2.waitKey()
