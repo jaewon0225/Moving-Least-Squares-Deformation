@@ -1,6 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
-
 
 def mls_affine_transform_pre_calc(p_input, v_input, a):
     ##Calculate weights w
