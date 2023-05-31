@@ -33,7 +33,7 @@ Img_map_x = np.zeros((img.shape[0], img.shape[1]), dtype=np.float32)
 Img_map_y = np.zeros((img.shape[0], img.shape[1]), dtype=np.float32)
 grid = make_grid(img.shape[0], img.shape[1])
 p = [[30, 30], [30, 75], [30, 120], [75, 30], [75, 75], [75, 120], [120, 30], [120, 75], [120, 120]]
-q = [[35, 40], [23, 66], [40, 110], [75, 24], [75, 80], [75, 108], [120, 31], [120, 60], [124, 120]]
+q = [[35, 40], [23, 66], [40, 110], [75, 53], [75, 53], [75, 108], [120, 31], [120, 60], [124, 120]]
 mls_affine_transform_pre_calc(p, grid, 1)
 A_list, w, w_sum = mls_affine_transform_pre_calc(p, grid, 1)
 new_v = (calculate_new_v(q, A_list, w, w_sum, grid))
