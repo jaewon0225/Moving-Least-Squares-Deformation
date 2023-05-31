@@ -78,15 +78,15 @@ def invert_map(self, F):
 
 class deformer():
     def set_parameters(self, p, img, a=1):
-        self.p, self.a = p, a
-        self.v = make_grid(img.shape[0], img.shape[1])
+        self.p, self.a, self.img = p, a, img
+        self.v = make_grid(self.img.shape[0], self.img.shape[1])
 
     def initialize_A(self):
         self.A_list, self.w, self.w_sum = mls_affine_transform_pre_calc(self.p, self.v, self.a)
 
-    def deform_image(self, q, img):
-        Img_map_x = np.zeros((img.shape[0], img.shape[1]), dtype=np.float32)
-        Img_map_y = np.zeros((img.shape[0], img.shape[1]), dtype=np.float32)
+    def deform_image(self, q):
+        Img_map_x = np.zeros((self.img.shape[0], self.img.shape[1]), dtype=np.float32)
+        Img_map_y = np.zeros((self.img.shape[0], self.img.shape[1]), dtype=np.float32)
         new_v = calculate_new_v(q, self.A_list, self.w, self.w_sum, self.v)
         k = 0
         for j in enumerate(Img_map_x[:, 0]):
@@ -95,6 +95,6 @@ class deformer():
                 Img_map_y[i[0], j[0]] = new_v[k][1]
                 k += 1
         combined = np.stack((Img_map_x, Img_map_y), axis=2)
-        dst_img = cv2.remap(img, invert_map(combined)[:, :, 0].reshape(img.shape[0], img.shape[1]),
-                            invert_map(combined)[:, :, 1].reshape(img.shape[0], img.shape[1]), cv2.INTER_LINEAR)
+        dst_img = cv2.remap(self.img, invert_map(combined)[:, :, 0].reshape(self.img.shape[0], self.img.shape[1]),
+                            invert_map(combined)[:, :, 1].reshape(self.img.shape[0], self.img.shape[1]), cv2.INTER_LINEAR)
         return dst_img
